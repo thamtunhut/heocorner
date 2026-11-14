@@ -290,25 +290,30 @@ p { margin: 0 0 1em; }
 .why-ic .ic { width: 26px; height: 26px; }
 
 /* ============ Contact ============ */
-.contact { padding: 72px 0; }
-.contact-inner { display: grid; gap: 24px; }
-@media (min-width: 900px) { .contact-inner { grid-template-columns: 1fr 1.2fr; } }
-.contact-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow-sm); }
-.contact-logo { width: 96px; height: 96px; border-radius: 50%; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
-.contact-list { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 14px; }
+.contact { padding: 36px 0; }
+.contact-inner { display: grid; gap: 16px; max-width: 980px; margin-inline: auto; }
+@media (min-width: 820px) { .contact-inner { grid-template-columns: 1fr 1fr; align-items: stretch; } }
+.contact-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--border); padding: 18px 20px; box-shadow: var(--shadow-sm); font-size: .92rem; }
+.contact-card h2 { font-size: 1.35rem; margin: 0; }
+.contact-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.contact-logo { width: 52px; height: 52px; border-radius: 50%; box-shadow: var(--shadow-sm); flex: none; }
+.contact-list { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 8px; }
+.contact-list .ic { width: 18px; height: 18px; }
+.contact-cta .btn { min-height: 42px; padding: 0 16px; font-size: .92rem; }
 .contact-list li { display: flex; gap: 12px; align-items: flex-start; }
 .contact-list .ic { color: var(--primary); margin-top: 2px; }
 .contact-list small { color: var(--ink-2); }
 .contact-list a { color: var(--primary); }
 .contact-cta { display: flex; flex-wrap: wrap; gap: 10px; }
-.map { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); min-height: 340px; background: var(--pink-100); box-shadow: var(--shadow-sm); }
-.map iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }
+.map { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); min-height: 220px; background: var(--pink-100); box-shadow: var(--shadow-sm); }
+.map iframe { width: 100%; height: 100%; min-height: 220px; border: 0; display: block; }
 
 /* ============ Footer ============ */
-.site-footer { background: var(--ink); color: #F6E6EE; padding: 36px 0 110px; font-size: .92rem; text-align: center; }
-.site-footer p { max-width: 760px; margin-inline: auto; }
-.site-footer .age { color: #FFB3D0; font-weight: 600; }
-.site-footer .copy { opacity: .75; margin-bottom: 0; }
+.site-footer { background: var(--ink); color: #F6E6EE; padding: 20px 0; font-size: .88rem; text-align: center; }
+.site-footer p { max-width: 760px; margin: 0 auto 6px; }
+.site-footer .age { color: #FFB3D0; font-weight: 600; margin-bottom: 0; }
+/* Điện thoại: chừa chỗ cho nút Zalo nổi để không che chữ */
+@media (max-width: 639px) { .site-footer { padding: 18px 76px 18px 0; text-align: left; } .site-footer p { margin-left: 0; } }
 
 /* ============ Zalo bubble ============ */
 .zalo-fab {
@@ -396,3 +401,49 @@ p { margin: 0 0 1em; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .zalo-icon::before, .zalo-icon::after { display: none; }
 }
+
+/* ============ Dữ liệu động: thông báo, tình trạng, giá cũ, khung tải ============ */
+.announce { background: var(--ink); color: #fff; font-size: .9rem; font-weight: 500; text-align: center; padding: 8px 0; }
+.announce a { color: #FFD3E5; text-decoration: underline; text-underline-offset: 3px; }
+
+.stock {
+  position: absolute; z-index: 1; right: 6px; top: 6px;
+  padding: 2px 8px; border-radius: 999px; font-size: .68rem; font-weight: 700;
+  background: #fff; box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+}
+.stock-out { color: #8A5A00; background: #FFF3D6; }
+.stock-discontinued { color: #fff; background: #55424C; }
+.card.is-out .card-media img { filter: saturate(.55); opacity: .82; }
+.card.is-discontinued .card-media img { filter: grayscale(1); opacity: .6; }
+.card.is-discontinued .card-price b { color: var(--ink-2); }
+.ptable .stock { position: static; margin-left: 6px; box-shadow: none; vertical-align: middle; }
+.ptable tr.row-discontinued td { color: var(--ink-2); }
+
+.card-price s, .ptable .num s, .vtable .num s {
+  color: var(--ink-2); font-weight: 500; font-size: .75rem; margin-left: 2px; text-decoration-thickness: 1.5px;
+}
+.ptable .num s, .vtable .num s { display: block; font-family: var(--font-body); }
+
+.dlg-status { display: inline-block; margin: 0 0 12px; padding: 4px 12px; border-radius: 999px; font-size: .85rem; font-weight: 700; }
+.dlg-status.st-available { background: #E3F6EA; color: #1B6B3A; }
+.dlg-status.st-out { background: #FFF3D6; color: #8A5A00; }
+.dlg-status.st-discontinued { background: #EDE6EA; color: #55424C; }
+
+.card.skeleton { cursor: default; animation: none; pointer-events: none; }
+.card.skeleton .card-media, .card.skeleton .card-body span {
+  background: linear-gradient(90deg, var(--pink-100) 0%, #fff 50%, var(--pink-100) 100%);
+  background-size: 200% 100%; animation: shimmer 1.2s linear infinite;
+}
+.card.skeleton .card-body span { display: block; height: 10px; border-radius: 6px; }
+.card.skeleton .card-body span:nth-child(2) { width: 80%; height: 14px; }
+.card.skeleton .card-body span:nth-child(3) { width: 45%; height: 14px; margin-top: 8px; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* Dải tình trạng trên ảnh sản phẩm */
+.stock-strip {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  padding: 7px 8px; text-align: center; font-weight: 800; font-size: .82rem; letter-spacing: .04em; text-transform: uppercase;
+}
+.strip-out { background: rgba(255, 196, 61, .95); color: #4A3100; }
+.strip-discontinued { background: rgba(58, 29, 43, .9); color: #fff; }
+.card.is-out .card-zoom, .card.is-discontinued .card-zoom { bottom: 40px; }

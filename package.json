@@ -1,0 +1,17 @@
+{
+  "name": "heo-corner",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Website giới thiệu sản phẩm và trang quản trị Heo Corner",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node dev-server.js",
+    "test": "node --test tests/api.test.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.9.0"
+  }
+}

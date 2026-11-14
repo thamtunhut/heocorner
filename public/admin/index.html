@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quản trị — Heo Corner</title>
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css?v=2">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5M9 3h6l-1 6 4 4H6l4-4z"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a10 10 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-9 9M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4L21 8M21 3v5h-5"/></symbol>
+  </svg>
+
+  <!-- ĐĂNG NHẬP -->
+  <main id="login-view" class="login" hidden>
+    <form class="login-card" id="login-form" novalidate>
+      <img src="/assets/img/logo.webp" alt="Heo Corner" width="88" height="88" class="login-logo">
+      <h1>Quản trị Heo Corner</h1>
+      <p class="muted">Đăng nhập để quản lý sản phẩm và xem thống kê.</p>
+      <div class="field">
+        <label for="lg-user">Tài khoản</label>
+        <input id="lg-user" name="username" autocomplete="username" required autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="lg-pass">Mật khẩu</label>
+        <div class="pw-wrap">
+          <input id="lg-pass" name="password" type="password" autocomplete="current-password" required>
+          <button type="button" class="pw-toggle" aria-label="Hiện mật khẩu" data-for="lg-pass"><svg class="ic"><use href="#i-eye"/></svg></button>
+        </div>
+      </div>
+      <p class="form-error" id="login-error" role="alert" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit" id="login-btn">Đăng nhập</button>
+      <p class="login-note"><svg class="ic"><use href="#i-lock"/></svg> Sai mật khẩu 5 lần sẽ bị khóa 30 phút.</p>
+    </form>
+  </main>
+
+  <!-- ỨNG DỤNG -->
+  <div id="app" class="app" hidden>
+    <aside class="side">
+      <a class="side-brand" href="#/tong-quan">
+        <img src="/assets/img/logo.webp" alt="" width="40" height="40">
+        <span>Heo Corner<small>Quản trị</small></span>
+      </a>
+      <nav class="side-nav" aria-label="Menu quản trị">
+        <a href="#/tong-quan" data-view="tong-quan"><svg class="ic"><use href="#i-home"/></svg><span>Tổng quan</span></a>
+        <a href="#/san-pham" data-view="san-pham"><svg class="ic"><use href="#i-box"/></svg><span>Sản phẩm</span></a>
+        <a href="#/danh-muc" data-view="danh-muc"><svg class="ic"><use href="#i-tag"/></svg><span>Danh mục</span></a>
+        <a href="#/cai-dat" data-view="cai-dat"><svg class="ic"><use href="#i-gear"/></svg><span>Thông báo</span></a>
+        <a href="#/nhat-ky" data-view="nhat-ky"><svg class="ic"><use href="#i-list"/></svg><span>Nhật ký</span></a>
+        <a href="#/tai-khoan" data-view="tai-khoan"><svg class="ic"><use href="#i-user"/></svg><span>Tài khoản</span></a>
+      </nav>
+      <div class="side-foot">
+        <a class="side-link" href="/" target="_blank" rel="noopener"><svg class="ic"><use href="#i-ext"/></svg><span>Xem trang web</span></a>
+        <button class="side-link" type="button" id="logout-btn"><svg class="ic"><use href="#i-logout"/></svg><span>Đăng xuất</span></button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <h1 id="view-title">Tổng quan</h1>
+        <div class="topbar-right">
+          <span class="who" id="who"></span>
+        </div>
+      </header>
+      <div class="content" id="content" tabindex="-1"></div>
+    </div>
+  </div>
+
+  <!-- Hộp thoại sửa sản phẩm -->
+  <dialog id="pd" class="modal modal-lg" aria-labelledby="pd-title">
+    <form id="pd-form" class="modal-inner" novalidate>
+      <header class="modal-head">
+        <h2 id="pd-title">Thêm sản phẩm</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Đóng"><svg class="ic"><use href="#i-x"/></svg></button>
+      </header>
+      <div class="modal-body pd-grid">
+        <div class="pd-image">
+          <div class="img-drop" id="pd-drop">
+            <img id="pd-img" alt="" hidden>
+            <div class="img-empty" id="pd-img-empty">
+              <svg class="ic"><use href="#i-upload"/></svg>
+              <span>Chọn hoặc kéo thả ảnh poster</span>
+              <small>JPG, PNG, WebP — tự nén khi lưu</small>
+            </div>
+          </div>
+          <label class="btn btn-outline btn-sm btn-block file-btn">
+            <svg class="ic"><use href="#i-upload"/></svg> <span id="pd-img-label">Chọn ảnh</span>
+            <input type="file" id="pd-file" accept="image/jpeg,image/png,image/webp" hidden>
+          </label>
+          <p class="hint" id="pd-img-info"></p>
+        </div>
+        <div class="pd-fields">
+          <div class="field">
+            <label for="pd-name">Tên sản phẩm <b class="req">*</b></label>
+            <input id="pd-name" maxlength="120" required>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="pd-cat">Danh mục <b class="req">*</b></label>
+              <select id="pd-cat" required></select>
+            </div>
+            <div class="field">
+              <label for="pd-origin">Xuất xứ</label>
+              <input id="pd-origin" maxlength="60" placeholder="VD: Bỉ, Đức, Mỹ (SX tại VN)">
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="pd-abv">Độ cồn</label>
+              <input id="pd-abv" maxlength="20" placeholder="VD: 5%">
+            </div>
+            <div class="field">
+              <label for="pd-badge">Nhãn nổi bật</label>
+              <input id="pd-badge" maxlength="20" placeholder="VD: Mới, Hot, Combo" list="badge-list">
+              <datalist id="badge-list"><option value="Mới"><option value="Hot"><option value="Best seller"><option value="Combo"><option value="Giảm giá"></datalist>
+            </div>
+          </div>
+          <div class="field">
+            <label for="pd-desc">Mô tả ngắn <small class="counter" id="pd-desc-count">0/500</small></label>
+            <textarea id="pd-desc" maxlength="500" rows="2"></textarea>
+          </div>
+
+          <fieldset class="field">
+            <legend>Tình trạng</legend>
+            <div class="seg" id="pd-status" role="radiogroup">
+              <label><input type="radio" name="pd-status" value="available"><span class="st-available">Còn hàng</span></label>
+              <label><input type="radio" name="pd-status" value="out"><span class="st-out">Tạm hết</span></label>
+              <label><input type="radio" name="pd-status" value="discontinued"><span class="st-discontinued">Ngừng bán</span></label>
+            </div>
+          </fieldset>
+          <div class="row-2 switches">
+            <label class="switch"><input type="checkbox" id="pd-visible"><span class="track"></span><span>Hiển thị trên web</span></label>
+            <label class="switch"><input type="checkbox" id="pd-featured"><span class="track"></span><span>Ghim lên đầu</span></label>
+          </div>
+
+          <fieldset class="field">
+            <legend>Quy cách &amp; giá <b class="req">*</b></legend>
+            <div class="variants" id="pd-variants"></div>
+            <button type="button" class="btn btn-ghost btn-sm" id="pd-add-variant"><svg class="ic"><use href="#i-plus"/></svg> Thêm quy cách</button>
+            <p class="hint">“Giá cũ” (tuỳ chọn) sẽ hiện gạch ngang cạnh giá bán để làm nổi bật khuyến mãi.</p>
+          </fieldset>
+        </div>
+      </div>
+      <footer class="modal-foot">
+        <p class="form-error" id="pd-error" role="alert" hidden></p>
+        <button type="button" class="btn btn-ghost" data-close>Hủy</button>
+        <button type="submit" class="btn btn-primary" id="pd-save">Lưu sản phẩm</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Hộp thoại xác nhận -->
+  <dialog id="confirm" class="modal modal-sm" aria-labelledby="cf-title">
+    <div class="modal-inner">
+      <div class="modal-body">
+        <h2 id="cf-title"></h2>
+        <p id="cf-text" class="muted"></p>
+      </div>
+      <footer class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="cf-no">Hủy</button>
+        <button type="button" class="btn btn-danger" id="cf-yes">Xác nhận</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+  <script src="/admin/admin.js?v=2"></script>
+</body>
+</html>

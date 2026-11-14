@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=2">
+  <link rel="stylesheet" href="assets/css/style.css?v=4">
 </head>
 <body>
   <a class="skip-link" href="#san-pham">Bỏ qua, xem sản phẩm</a>
@@ -36,6 +36,8 @@
   </svg>
 
   <!-- HEADER -->
+  <div class="announce" id="announce" role="note" hidden></div>
+
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="Heo Corner — về đầu trang">
@@ -160,8 +162,10 @@
     <section class="contact" id="lien-he" aria-labelledby="ct-title">
       <div class="container contact-inner">
         <div class="contact-card">
-          <img class="contact-logo" src="assets/img/logo.webp" alt="Logo Heo Corner by Ahn OTah" width="120" height="120" loading="lazy">
-          <h2 id="ct-title">Ghé Heo Corner</h2>
+          <div class="contact-head">
+            <img class="contact-logo" src="assets/img/logo.webp" alt="Logo Heo Corner by Ahn OTah" width="52" height="52" loading="lazy">
+            <h2 id="ct-title">Ghé Heo Corner</h2>
+          </div>
           <ul class="contact-list">
             <li><svg class="ic"><use href="#i-pin"/></svg><span>135 Âu Cơ, Phường Hòa Bình<br><small>(P.14, Q.11 cũ), TP.HCM</small></span></li>
             <li><svg class="ic"><use href="#i-clock"/></svg><span>9:00 – 19:00, mở cửa hằng ngày</span></li>
@@ -185,7 +189,6 @@
     <div class="container">
       <p>Giá đã bao gồm thùng / quy cách như mô tả. Vui lòng liên hệ Hotline / Zalo <b>0929 777 784</b> để xác nhận tồn kho và phí giao hàng trước khi đặt.</p>
       <p class="age">18+ · Không bán rượu bia cho người dưới 18 tuổi · Đã uống rượu bia không lái xe.</p>
-      <p class="copy">© <span id="year"></span> Heo Corner by Ahn OTah</p>
     </div>
   </footer>
 
@@ -211,6 +214,7 @@
         <p class="dlg-cat" id="dlg-cat"></p>
         <h3 id="dlg-title"></h3>
         <p class="dlg-meta" id="dlg-meta"></p>
+        <p class="dlg-status" id="dlg-status"></p>
         <p class="dlg-desc" id="dlg-desc"></p>
         <table class="vtable" id="dlg-variants">
           <thead><tr><th scope="col">Quy cách</th><th scope="col">Đóng gói</th><th scope="col" class="num">Giá</th></tr></thead>
@@ -225,7 +229,6 @@
     </div>
   </dialog>
 
-  <script src="assets/js/products.js?v=2"></script>
-  <script src="assets/js/app.js?v=2"></script>
+  <script src="assets/js/app.js?v=4"></script>
 </body>
 </html>

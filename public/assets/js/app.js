@@ -1,18 +1,8 @@
 (function () {
   "use strict";
 
-  var CATS = window.CATEGORIES || [];
-  var ITEMS = (window.PRODUCTS || []).map(function (p, i) {
-    var prices = p.variants.map(function (v) { return v.price; });
-    p._order = i;
-    p._min = Math.min.apply(null, prices);
-    p._max = Math.max.apply(null, prices);
-    p._catName = (CATS.find(function (c) { return c.id === p.cat; }) || {}).name || "";
-    p._search = norm([p.name, p.origin, p._catName, p.desc, p.abv,
-      p.variants.map(function (v) { return v.label + " " + v.pack; }).join(" ")].join(" "));
-    return p;
-  });
-
+  var STATUS = { available: "Còn hàng", out: "Tạm hết", discontinued: "Ngừng bán" };
+  var CATS = [], ITEMS = [];
   var state = { cat: "all", q: "", sort: "default", view: "grid" };
 
   var $ = function (s) { return document.querySelector(s); };
@@ -22,19 +12,62 @@
   function norm(s) {
     return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d");
   }
-  function money(n) { return n.toLocaleString("vi-VN") + "đ"; }
+  function money(n) { return Number(n).toLocaleString("vi-VN") + "đ"; }
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  function img(id, lg) { return "assets/img/sp/" + id + (lg ? "-lg" : "") + ".webp"; }
+  var FALLBACK_IMG = "/assets/img/logo.webp";
+  function thumb(p) { return (p.image && p.image.thumb) || FALLBACK_IMG; }
+  function large(p) { return (p.image && (p.image.large || p.image.thumb)) || FALLBACK_IMG; }
+
+  /* ---------- Thống kê (không gửi dữ liệu cá nhân) ---------- */
+  function track(type, id) {
+    try {
+      fetch("/api/track", {
+        method: "POST", keepalive: true, headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: type, id: id })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href*="zalo.me"]');
+    if (a) track("zalo");
+  });
+
+  /* ---------- Chuẩn bị dữ liệu ---------- */
+  function prepare(data) {
+    CATS = [{ id: "all", name: "Tất cả" }].concat(data.categories || []);
+    ITEMS = (data.products || []).map(function (p, i) {
+      var prices = p.variants.map(function (v) { return v.price; });
+      p._order = i;
+      p._min = Math.min.apply(null, prices);
+      p._max = Math.max.apply(null, prices);
+      var minV = p.variants.filter(function (v) { return v.price === p._min; })[0];
+      p._old = minV && minV.oldPrice ? minV.oldPrice : null;
+      p._catName = (CATS.filter(function (c) { return c.id === p.cat; })[0] || {}).name || "";
+      p._search = norm([p.name, p.origin, p._catName, p.desc, p.abv, p.badge,
+        p.variants.map(function (v) { return v.label + " " + v.pack; }).join(" ")].join(" "));
+      return p;
+    });
+    var a = (data.settings && data.settings.announcement) || {};
+    var bar = $("#announce");
+    if (a.enabled && a.text) {
+      var inner = a.link
+        ? '<a href="' + esc(a.link) + '"' + (/^https?:/i.test(a.link) ? ' target="_blank" rel="noopener"' : "") + ">" + esc(a.text) + "</a>"
+        : esc(a.text);
+      bar.innerHTML = '<div class="container">' + inner + "</div>";
+      bar.hidden = false;
+    }
+  }
 
   /* ---------- Chips ---------- */
   function renderChips() {
     chipsEl.innerHTML = CATS.map(function (c) {
       var n = c.id === "all" ? ITEMS.length : ITEMS.filter(function (p) { return p.cat === c.id; }).length;
-      return '<button type="button" class="chip" role="tab" data-cat="' + c.id + '" aria-selected="' + (state.cat === c.id) + '">' +
+      if (!n && c.id !== "all") return "";
+      return '<button type="button" class="chip" role="tab" data-cat="' + esc(c.id) + '" aria-selected="' + (state.cat === c.id) + '">' +
         esc(c.short || c.name) + ' <span class="n">' + n + "</span></button>";
     }).join("");
   }
@@ -46,7 +79,7 @@
     render();
   });
 
-  /* ---------- Filtering ---------- */
+  /* ---------- Lọc ---------- */
   function filtered() {
     var q = norm(state.q).trim();
     var terms = q ? q.split(/\s+/) : [];
@@ -55,7 +88,9 @@
       return terms.every(function (t) { return p._search.indexOf(t) !== -1; });
     });
     var s = state.sort;
+    var gone = function (p) { return p.status === "discontinued" ? 1 : 0; };
     list.sort(function (a, b) {
+      if (s !== "default" && gone(a) !== gone(b)) return gone(a) - gone(b);
       if (s === "asc") return a._min - b._min;
       if (s === "desc") return b._max - a._max;
       if (s === "name") return a.name.localeCompare(b.name, "vi");
@@ -65,22 +100,30 @@
   }
 
   /* ---------- Render ---------- */
+  function statusTag(p) {
+    if (!p.status || p.status === "available") return "";
+    return '<span class="stock stock-' + p.status + '">' + STATUS[p.status] + "</span>";
+  }
+
   function cardHTML(p, i) {
     var multi = p.variants.length > 1;
     var unit = multi ? "" : "<small>/ " + esc(p.variants[0].pack.toLowerCase()) + "</small>";
     var meta = [p.origin, p.abv].filter(Boolean).join(" · ");
-    return '<button type="button" class="card" data-id="' + p.id + '" style="--i:' + Math.min(i, 12) + '" aria-label="' +
-      esc(p.name + ", " + (multi ? "từ " : "") + money(p._min)) + '">' +
+    var st = p.status && p.status !== "available" ? " is-" + p.status : "";
+    return '<button type="button" class="card' + st + '" data-id="' + esc(p.id) + '" style="--i:' + Math.min(i, 12) + '" aria-label="' +
+      esc(p.name + ", " + (multi ? "từ " : "") + money(p._min) + (st ? ", " + STATUS[p.status] : "")) + '">' +
       '<div class="card-media">' +
         (p.badge ? '<span class="badge">' + esc(p.badge) + "</span>" : "") +
-        '<img src="' + img(p.id) + '" alt="Poster ' + esc(p.name) + '" width="560" height="700" loading="lazy" decoding="async">' +
+        '<img src="' + esc(thumb(p)) + '" alt="Poster ' + esc(p.name) + '" width="560" height="700" loading="lazy" decoding="async">' +
+        (st ? '<span class="stock-strip strip-' + p.status + '">' + (p.status === "out" ? "Tạm hết hàng" : "Ngừng bán") + "</span>" : "") +
         '<span class="card-zoom" aria-hidden="true"><svg class="ic"><use href="#i-zoom"/></svg></span>' +
       "</div>" +
       '<div class="card-body">' +
         '<span class="card-origin">' + esc(meta) + "</span>" +
         '<h3 class="card-title">' + esc(p.name) + "</h3>" +
         '<div class="card-variants">' + p.variants.map(function (v) { return "<span>" + esc(v.label) + "</span>"; }).join("") + "</div>" +
-        '<div class="card-price">' + (multi ? '<span class="from">từ</span>' : "") + "<b>" + money(p._min) + "</b>" + unit + "</div>" +
+        '<div class="card-price">' + (multi ? '<span class="from">từ</span>' : "") + "<b>" + money(p._min) + "</b>" +
+          (p._old ? "<s>" + money(p._old) + "</s>" : unit) + "</div>" +
       "</div></button>";
   }
 
@@ -92,14 +135,15 @@
         lastCat = p.cat;
       }
       p.variants.forEach(function (v, k) {
-        rows += '<tr data-id="' + p.id + '">' +
-          '<td class="col-thumb">' + (k === 0 ? '<img class="thumb" src="' + img(p.id) + '" alt="" loading="lazy" width="44" height="55">' : "") + "</td>" +
-          '<td class="pname"><button type="button" class="linklike" data-id="' + p.id + '">' + esc(p.name) + "</button>" +
+        rows += '<tr data-id="' + esc(p.id) + '"' + (p.status && p.status !== "available" ? ' class="row-' + p.status + '"' : "") + ">" +
+          '<td class="col-thumb">' + (k === 0 ? '<img class="thumb" src="' + esc(thumb(p)) + '" alt="" loading="lazy" width="44" height="55">' : "") + "</td>" +
+          '<td class="pname"><button type="button" class="linklike" data-id="' + esc(p.id) + '">' + esc(p.name) + "</button>" +
+            (k === 0 ? statusTag(p) : "") +
             '<span class="sub">' + esc(v.label) + (p.abv ? " · " + esc(p.abv) : "") +
             '<span class="sub-pack"> · ' + esc(v.pack) + "</span></span></td>" +
           '<td class="col-origin">' + esc(p.origin) + "</td>" +
           '<td class="col-pack">' + esc(v.pack) + "</td>" +
-          '<td class="num">' + money(v.price) + "</td></tr>";
+          '<td class="num">' + (v.oldPrice ? "<s>" + money(v.oldPrice) + "</s>" : "") + money(v.price) + "</td></tr>";
       });
     });
     return '<table class="ptable"><thead><tr><th class="col-thumb" scope="col"><span class="sr-only">Ảnh</span></th>' +
@@ -142,33 +186,40 @@
     var r = e.target.closest("[data-id]"); if (r) openProduct(r.dataset.id);
   });
 
-  /* ---------- Dialog ---------- */
+  /* ---------- Popup chi tiết ---------- */
   var dlg = $("#dlg"), dImg = $("#dlg-img"), lastFocus = null;
 
   function openProduct(id) {
-    var p = ITEMS.find(function (x) { return x.id === id; }); if (!p) return;
+    var p = ITEMS.filter(function (x) { return x.id === id; })[0]; if (!p) return;
     lastFocus = document.activeElement;
     $("#dlg-cat").textContent = p._catName;
     $("#dlg-title").textContent = p.name;
     $("#dlg-meta").textContent = [p.origin, p.abv ? "Độ cồn " + p.abv : ""].filter(Boolean).join(" · ");
+    var st = p.status || "available";
+    var stEl = $("#dlg-status");
+    stEl.textContent = STATUS[st];
+    stEl.className = "dlg-status st-" + st;
     $("#dlg-desc").textContent = p.desc || "";
     $("#dlg-variants tbody").innerHTML = p.variants.map(function (v) {
-      return "<tr><td>" + esc(v.label) + "</td><td>" + esc(v.pack) + '</td><td class="num">' + money(v.price) + "</td></tr>";
+      return "<tr><td>" + esc(v.label) + "</td><td>" + esc(v.pack) + '</td><td class="num">' +
+        (v.oldPrice ? "<s>" + money(v.oldPrice) + "</s>" : "") + money(v.price) + "</td></tr>";
     }).join("");
-    // ảnh nhỏ (đã cache) hiện trước, ảnh lớn thay vào khi tải xong
-    dImg.src = img(p.id);
+    dImg.src = thumb(p);
     dImg.alt = "Poster " + p.name;
     var big = new Image();
     big.onload = function () { if (dlg.dataset.id === p.id) dImg.src = big.src; };
-    big.src = img(p.id, true);
-    $("#dlg-media").href = img(p.id, true);
-    $("#dlg-zalo").dataset.msg = "Chào Heo Corner, mình muốn đặt: " + p.name + " (" +
+    big.src = large(p);
+    $("#dlg-media").href = large(p);
+    var zaloBtn = $("#dlg-zalo");
+    zaloBtn.lastChild.textContent = st === "available" ? " Đặt qua Zalo" : " Hỏi hàng qua Zalo";
+    zaloBtn.dataset.msg = "Chào Heo Corner, mình muốn " + (st === "available" ? "đặt" : "hỏi về") + ": " + p.name + " (" +
       p.variants.map(function (v) { return v.label + " – " + money(v.price); }).join("; ") + ")";
     dlg.dataset.id = p.id;
     if (!dlg.open) dlg.showModal();
     $(".dlg-body").scrollTop = 0;
     $("#dlg-media").scrollTop = 0;
     if (location.hash !== "#sp/" + p.id) history.replaceState(null, "", "#sp/" + p.id);
+    track("product", p.id);
   }
   function closeDlg() { dlg.close(); }
   dlg.addEventListener("close", function () {
@@ -198,7 +249,7 @@
     toastEl._t = setTimeout(function () { toastEl.classList.remove("show"); }, 3200);
   }
 
-  /* ---------- Header / FAB on scroll ---------- */
+  /* ---------- Header / nút Zalo khi cuộn ---------- */
   var header = $(".site-header"), fab = $(".zalo-fab");
   function onScroll() {
     var y = window.scrollY;
@@ -207,13 +258,36 @@
   }
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  /* ---------- Init ---------- */
+  /* ---------- Khởi động ---------- */
   try { var v = localStorage.getItem("hc-view"); if (v === "grid" || v === "table") state.view = v; } catch (e) {}
   document.querySelectorAll(".view-toggle button").forEach(function (x) { x.setAttribute("aria-pressed", x.dataset.view === state.view); });
-  $("#year").textContent = new Date().getFullYear();
-  renderChips();
-  render();
   onScroll();
-  var m = location.hash.match(/^#sp\/(.+)$/);
-  if (m) openProduct(decodeURIComponent(m[1]));
+
+  // Khung xương trong lúc tải
+  gridEl.innerHTML = Array.apply(null, Array(12)).map(function () {
+    return '<div class="card skeleton" aria-hidden="true"><div class="card-media"></div><div class="card-body"><span></span><span></span><span></span></div></div>';
+  }).join("");
+  countEl.textContent = "Đang tải sản phẩm…";
+
+  function load(attempt) {
+    return fetch("/api/products", { cache: "no-store", headers: { Accept: "application/json" } })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        prepare(data);
+        renderChips();
+        render();
+        var m = location.hash.match(/^#sp\/(.+)$/);
+        if (m) openProduct(decodeURIComponent(m[1]));
+      })
+      .catch(function () {
+        if (attempt < 2) return new Promise(function (r) { setTimeout(r, 800); }).then(function () { return load(attempt + 1); });
+        gridEl.innerHTML = "";
+        gridEl.hidden = true;
+        countEl.textContent = "";
+        emptyEl.querySelector("p").textContent = "Chưa tải được danh sách sản phẩm. Vui lòng tải lại trang hoặc nhắn Zalo để xem bảng giá.";
+        emptyEl.hidden = false;
+      });
+  }
+  load(0);
+  track("pageview");
 })();

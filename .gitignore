@@ -7,3 +7,13 @@
 /.claude/
 Thumbs.db
 .DS_Store
+
+# Node / Vercel
+node_modules/
+.vercel/
+.env*.local
+.env
+
+# Dữ liệu chạy thử local
+data/local-db.json
+public/uploads/
