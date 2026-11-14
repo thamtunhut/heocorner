@@ -1,0 +1,9 @@
+# File gốc chỉ dùng để dựng web (không cần khi deploy)
+/Source/
+/Bảng giá.pdf
+/Logo.jpg
+
+# Cấu hình local
+/.claude/
+Thumbs.db
+.DS_Store
