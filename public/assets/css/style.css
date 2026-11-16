@@ -447,3 +447,17 @@ p { margin: 0 0 1em; }
 .strip-out { background: rgba(255, 196, 61, .95); color: #4A3100; }
 .strip-discontinued { background: rgba(58, 29, 43, .9); color: #fff; }
 .card.is-out .card-zoom, .card.is-discontinued .card-zoom { bottom: 40px; }
+
+/* Nút mở đúng địa điểm trên Google Maps (link trong iframe không sửa được) */
+.map { position: relative; }
+.map-open {
+  position: absolute; left: 66px; bottom: 12px; z-index: 1;
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px;
+  border-radius: 999px; background: var(--primary); color: #fff; font-weight: 600; font-size: .85rem; text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2); transition: background-color .2s;
+}
+.map-open:hover { background: var(--primary-hover); }
+.map-open .ic { width: 16px; height: 16px; }
+.addr-link { color: inherit; text-decoration: underline; text-decoration-color: var(--pink-300); text-underline-offset: 3px; }
+.addr-link:hover { color: var(--primary); }
+.contact-cta { gap: 8px; }

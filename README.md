@@ -42,6 +42,6 @@ npm run dev
 
 1. Import repo vào Vercel (Framework: **Other**, không cần build command).
 2. **Storage → Upstash (Redis)** từ Marketplace → gắn vào project (tự thêm `KV_REST_API_URL`, `KV_REST_API_TOKEN`).
-3. **Storage → Blob** → gắn vào project (tự thêm `BLOB_READ_WRITE_TOKEN`).
+3. **Storage → Blob** (Public) → gắn vào project. Vercel tự thêm `BLOB_STORE_ID` (xác thực OIDC — Settings → Security → OIDC Federation phải bật, mặc định đã bật). Code cũng hỗ trợ `BLOB_READ_WRITE_TOKEN` kiểu cũ.
 4. **Settings → Environment Variables**: thêm `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `SESSION_SECRET` (chuỗi ngẫu nhiên ≥ 32 ký tự).
 5. Deploy, đăng nhập `/admin` và **đổi mật khẩu ngay**.
